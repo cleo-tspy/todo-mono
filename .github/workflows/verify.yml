@@ -1,0 +1,15 @@
+# 同一個 repo：main 有 push 就跑 verification/ 的黑箱測試
+name: verify
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  black-box:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - run: APP_DIR=$PWD/app uv run --directory verification pytest -q -rf
