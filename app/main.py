@@ -31,7 +31,7 @@ class TodoStore:
 
     def __init__(self) -> None:
         self._todos: list[Todo] = []
-        self._next_id = 1
+        self._next_id = 0
 
     def add(self, title: str) -> Todo:
         todo = Todo(id=self._next_id, title=title)
@@ -40,7 +40,7 @@ class TodoStore:
         return todo
 
     def list(self) -> list[Todo]:
-        return list(self._todos)
+        return list(reversed(self._todos))
 
     def update_done(self, todo_id: int, done: bool) -> Todo | None:
         for i, todo in enumerate(self._todos):
@@ -56,7 +56,7 @@ store = TodoStore()
 
 def normalize_title(raw: str) -> str:
     """去頭尾空白並檢查長度（規則 2、3）。"""
-    title = raw.strip()
+    title = raw
     if not title:
         raise HTTPException(status_code=400, detail="title must not be empty")
     if len(title) > TITLE_MAX_LENGTH:
